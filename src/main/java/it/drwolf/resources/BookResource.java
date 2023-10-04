@@ -28,7 +28,7 @@ public class BookResource {
 
 
 	@GET
-	@RolesAllowed("corso")
+	@RolesAllowed({ "corso","admin" })
 	public List<Book> all(){
 		return bookRepository.listAll();
 	}
