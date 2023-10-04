@@ -6,6 +6,10 @@
     port: 3306
     username: root
     password: ''
+  oidc:
+    auth-server-url: https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_iwADbDzuF
+    token:
+      audience: '5e89cfg3p9c3dp3n3se265jdqk'
 
 '%prod':
   db:
@@ -30,8 +34,13 @@
     password: ''
 
 quarkus:
+  keycloak:
+    devservices:
+      enabled: false
   oidc:
     auth-server-url: ${oidc.auth-server-url}
+    roles:
+      role-claim-path: 'cognito:groups'
   datasource:
     db-kind: mysql
     username: ${db.username}
