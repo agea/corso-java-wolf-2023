@@ -6,6 +6,9 @@
     port: 3306
     username: root
     password: ''
+  quartz:
+    cron: 0 0 0 0 ? *
+    start-mode: HALTED # FORCED|HALTED
   oidc:
     auth-server-url: https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_iwADbDzuF
     token:
@@ -19,6 +22,8 @@
     port: 3306
     username: root
     password: ''
+  quartz:
+    start-mode: FORCED # FORCED|HALTED
   oidc:
     auth-server-url: https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_iwADbDzuF
     token:
@@ -34,6 +39,8 @@
     password: ''
 
 quarkus:
+  quartz:
+    start-mode: ${quartz.start-mode}
   keycloak:
     devservices:
       enabled: false
