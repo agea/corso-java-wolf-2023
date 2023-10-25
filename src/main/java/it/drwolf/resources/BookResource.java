@@ -1,9 +1,11 @@
 package it.drwolf.resources;
 
 import io.quarkus.security.Authenticated;
+import io.vertx.core.eventbus.EventBus;
 import it.drwolf.model.dtos.BookDTO;
 import it.drwolf.model.entities.Book;
 import it.drwolf.repositories.BookRepository;
+import it.drwolf.services.LongRunning;
 import it.drwolf.services.TaskScheduler;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -20,7 +22,6 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import java.util.List;
 
 @Path("/book")
-@Authenticated
 public class BookResource {
 
 	@Inject
@@ -32,6 +33,9 @@ public class BookResource {
 	@Inject
 	JsonWebToken jwt;
 
+
+	@Inject
+	EventBus bus;
 
 	@GET
 	@RolesAllowed({ "corso","admin" })
@@ -53,9 +57,16 @@ public class BookResource {
 	public Book update(@PathParam Long id, Book book){
 		bookRepository.persist(book);
 		taskScheduler.scheduleTask();
+
 		return book;
 	}
 
+
+	@GET
+	@Path("long-running")
+	public void longRunningTask(){
+		bus.send(LongRunning.LONG,"Hello!");
+	}
 
 
 }
